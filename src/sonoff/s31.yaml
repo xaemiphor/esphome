@@ -1,0 +1,33 @@
+substitutions:
+  vendor_name: sonoff
+  vendor_friendly: Sonoff
+  device_name: s31
+  device_friendly: S31
+
+  esphome_name: ${vendor_name}
+  esphome_friendly_name: "${vendor_friendly} ${device_friendly}"
+  switch_relay_restore_mode: "RESTORE_DEFAULT_ON"
+
+packages:
+  s31-lite: !include s31-lite.yaml
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "${esphome_friendly_name} Current"
+      accuracy_decimals: 1
+    voltage:
+      name: "${esphome_friendly_name} Voltage"
+      accuracy_decimals: 1
+    power:
+      name: "${esphome_friendly_name} Power"
+      accuracy_decimals: 1
+      id: device_power
+    update_interval: 60s
+  - platform: total_daily_energy
+    name: "${esphome_friendly_name} Daily Energy"
+    power_id: device_power
