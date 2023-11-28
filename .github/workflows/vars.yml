@@ -1,0 +1,20 @@
+on:
+  workflow_call:
+    outputs:
+      include:
+        value: ${{ jobs.vars.outputs.include }}
+
+jobs:
+  vars:
+    runs-on: ubuntu-latest
+    outputs:
+      include: "${{ steps.vars.outputs.include }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: vars
+        id: vars
+        run: |
+          echo include=$(find . -mindepth 1 -maxdepth 1 -type f -iname '*.yaml' -printf '%f\n' | jq -c --raw-input -s '[split("\n")[] | select(length > 0)] | map({"yaml_file": .})') | tee -a ${GITHUB_OUTPUT}

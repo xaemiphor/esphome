@@ -1,0 +1,47 @@
+name: Compile
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  vars:
+    uses: ./.github/workflows/vars.yml
+  compile:
+    runs-on: ubuntu-latest
+    needs: [ vars ]
+    strategy:
+      matrix:
+        include: ${{ fromJSON(needs.vars.outputs.include) }}
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: compile
+        id: compile
+        uses: esphome/build-action@v1
+        with:
+          yaml_file: ${{ matrix.yaml_file }}
+
+      - name: dist
+        id: dist
+        shell: bash
+        env:
+          YAML_FILE: ${{ matrix.yaml_file }}
+        run: |
+          set -x
+          mkdir dist
+          BIN_FILE=$(basename "${YAML_FILE%.*}.bin")
+          cp ${{ steps.compile.outputs.name }}/${{ steps.compile.outputs.name }}.bin dist/${BIN_FILE}
+          echo "device=${BIN_FILE%.*}" | tee -a $GITHUB_OUTPUT
+          echo "binary=dist/${BIN_FILE}" | tee -a $GITHUB_OUTPUT
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        if: ${{ !env.ACT }}
+        with:
+          name: ${{ steps.dist.outputs.device }}
+          path: ${{ steps.dist.outputs.binary }}
+          retention-days: 1
