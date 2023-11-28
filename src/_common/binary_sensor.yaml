@@ -1,0 +1,4 @@
+binary_sensor:
+  - platform: status
+    name: "${esphome_friendly_name} Status"
+    id: esphome_status

@@ -1,0 +1,11 @@
+sensor:
+  - platform: uptime
+    name: "${esphome_friendly_name} Uptime"
+    update_interval: 60s
+    accuracy_decimals: 1
+    id: esphome_uptime
+  - platform: wifi_signal
+    name: "${esphome_friendly_name} Wifi Signal"
+    update_interval: 60s
+    accuracy_decimals: 1
+    id: esphome_wifi_signal

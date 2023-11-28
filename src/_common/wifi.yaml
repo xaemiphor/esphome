@@ -1,0 +1,3 @@
+wifi:
+  ap:
+    ssid: ${esphome_name}

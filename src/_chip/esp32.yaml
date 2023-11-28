@@ -1,0 +1,3 @@
+esp32:
+  board: ${esp32_board}
+  variant: ${esp32_variant}

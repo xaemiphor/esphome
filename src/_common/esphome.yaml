@@ -1,0 +1,8 @@
+esphome:
+  name: ${esphome_name}
+  friendly_name: ${esphome_friendly_name}
+  name_add_mac_suffix: true
+  min_version: 2023.11.4
+  project:
+    name: "xaemiphor.${vendor_name}_${device_name}"
+    version: "0.1"
