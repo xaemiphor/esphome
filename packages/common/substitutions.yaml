@@ -1,0 +1,3 @@
+substitutions:
+  esphome_name: ${vendor_name}
+  esphome_friendly_name: "${vendor_friendly} ${device_friendly}"

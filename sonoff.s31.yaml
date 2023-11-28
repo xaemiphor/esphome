@@ -4,12 +4,10 @@ substitutions:
   device_name: s31
   device_friendly: S31
 
-  esphome_name: ${vendor_name}
-  esphome_friendly_name: "${vendor_friendly} ${device_friendly}"
   switch_relay_restore_mode: "RESTORE_DEFAULT_ON"
 
 packages:
-  s31-lite: !include s31-lite.yaml
+  s31-lite: !include sonoff.s31-lite.yaml
 
 uart:
   rx_pin: RX

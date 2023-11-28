@@ -1,3 +1,0 @@
-dashboard_import:
-  import_full_config: false
-  package_import_url: "github://xaemiphor/esphome/src/${vendor_name}/${device_name}.yaml"
