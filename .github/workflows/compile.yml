@@ -1,6 +1,8 @@
 name: Compile
 
 on:
+  schedule:
+    - cron: '0 0 * * 0'
   push:
   workflow_dispatch:
 
@@ -37,6 +39,11 @@ jobs:
           cp ${{ steps.compile.outputs.name }}/${{ steps.compile.outputs.name }}.bin dist/${BIN_FILE}
           echo "device=${BIN_FILE%.*}" | tee -a $GITHUB_OUTPUT
           echo "binary=dist/${BIN_FILE}" | tee -a $GITHUB_OUTPUT
+          if [[ "${{ github.event.schedule }}" == "0 0 * * 0" ]]; then
+            echo "retention=7" | tee -a $GITHUB_OUTPUT
+          else
+            echo "retention=1" | tee -a $GITHUB_OUTPUT
+          fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -44,4 +51,4 @@ jobs:
         with:
           name: ${{ steps.dist.outputs.device }}
           path: ${{ steps.dist.outputs.binary }}
-          retention-days: 1
+          retention-days: ${{ steps.dist.outputs.retention }}
