@@ -1,0 +1,50 @@
+substitutions:
+  vendor_name: kmc
+  vendor_friendly: KMC
+  device_name: "30608"
+  device_friendly: "30608"
+
+  switch_relay1_restore_mode: "RESTORE_DEFAULT_ON"
+  switch_relay2_restore_mode: "RESTORE_DEFAULT_ON"
+  switch_relay3_restore_mode: "RESTORE_DEFAULT_ON"
+
+packages:
+  common: !include_dir_merge_named packages/common/
+  esp8266: !include packages/chip/esp8266.yaml
+  api: !include_dir_merge_named packages/api/
+
+esp8266:
+  board: esp01_1m
+
+status_led:
+  pin:
+    number: GPIO1
+    inverted: True
+
+switch:
+  - id: relay1
+    platform: gpio
+    name: "${esphome_friendly_name} Relay 1"
+    pin: GPIO15
+    restore_mode: ${switch_relay1_restore_mode}
+  - id: relay2
+    platform: gpio
+    name: "${esphome_friendly_name} Relay 2"
+    pin: GPIO13
+    restore_mode: ${switch_relay2_restore_mode}
+  - id: relay3
+    platform: gpio
+    name: "${esphome_friendly_name} Relay 3"
+    pin: GPIO14
+    restore_mode: ${switch_relay3_restore_mode}
+
+binary_sensor:
+  - id: button
+    platform: gpio
+    pin:
+      number: GPIO16
+      inverted: False
+    name: "${esphome_friendly_name} Button"
+    on_press:
+      - switch.toggle: relay1
+    internal: True
