@@ -17,6 +17,10 @@ packages:
 esp8266:
   board: esp01_1m
 
+esphome:
+  project:
+    version: '0.2'
+
 status_led:
   pin:
     number: GPIO1
@@ -49,3 +53,34 @@ binary_sensor:
     on_press:
       - switch.toggle: relay1
     internal: True
+
+sensor:
+  - platform: hlw8012
+    sel_pin:
+      number: GPIO12
+      inverted: False
+    cf_pin: GPIO4
+    cf1_pin: GPIO5
+    current:
+      name: "${esphome_friendly_name} Current"
+      accuracy_decimals: 1
+    voltage:
+      name: "${esphome_friendly_name} Voltage"
+      accuracy_decimals: 1
+    power:
+      name: "${esphome_friendly_name} Power"
+      accuracy_decimals: 1
+      id: device_power
+      filters:
+        - lambda: return (x / 2.2);
+    update_interval: 60s
+    current_resistor: 0.001  # default 0.001
+    voltage_divider: 910  # default 2351
+    change_mode_every: 3  # default 8
+
+  - platform: total_daily_energy
+    name: "${esphome_friendly_name} Daily Energy"
+    power_id: device_power
+    filters:
+      - multiply: 0.001 # convert Wh to kWh
+    unit_of_measurement: kWh
