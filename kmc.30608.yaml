@@ -8,6 +8,10 @@ substitutions:
   switch_relay2_restore_mode: "RESTORE_DEFAULT_ON"
   switch_relay3_restore_mode: "RESTORE_DEFAULT_ON"
 
+  hlw8012_voltage_divider: "2144.0845"
+  hlw8012_current_resistor: "0.0008246478873239436"
+  hlw8012_current_multiply: "0.27946400625978085"
+
 packages:
   common: !include_dir_merge_named packages/common/
   esp8266: !include packages/chip/esp8266.yaml
@@ -64,6 +68,8 @@ sensor:
     current:
       name: "${esphome_friendly_name} Current"
       accuracy_decimals: 1
+      filters:
+        - multiply: ${hlw8012_current_multiply} # default 1.0
     voltage:
       name: "${esphome_friendly_name} Voltage"
       accuracy_decimals: 1
@@ -74,8 +80,8 @@ sensor:
       filters:
         - lambda: return (x / 2.2);
     update_interval: 60s
-    current_resistor: 0.001  # default 0.001
-    voltage_divider: 910  # default 2351
+    voltage_divider: ${hlw8012_voltage_divider}  # default 2351
+    current_resistor: ${hlw8012_current_resistor}  # default 0.001
     change_mode_every: 3  # default 8
 
   - platform: total_daily_energy
