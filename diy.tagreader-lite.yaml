@@ -12,6 +12,7 @@ packages:
   common: !include_dir_merge_named packages/common/
   esp8266: !include packages/chip/esp8266.yaml
   api: !include_dir_merge_named packages/api/
+  dev: !include_dir_merge_named packages/dev/
 
 esp8266:
   board: d1_mini

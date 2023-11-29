@@ -12,6 +12,7 @@ packages:
   common: !include_dir_merge_named packages/common/
   esp32: !include packages/chip/esp32.yaml
   api: !include_dir_merge_named packages/api/
+  dev: !include_dir_merge_named packages/dev/
 
 esp32:
   board: ${esp32_board}
