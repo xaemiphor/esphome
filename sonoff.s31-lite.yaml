@@ -22,14 +22,15 @@ status_led:
     inverted: True
 
 switch:
-  - platform: gpio
+  - id: relay
+    platform: gpio
     name: "${esphome_friendly_name} Relay"
     pin: GPIO12
-    id: relay
     restore_mode: ${switch_relay_restore_mode}
 
 binary_sensor:
-  - platform: gpio
+  - id: button
+    platform: gpio
     pin:
       number: GPIO0
       mode: INPUT_PULLUP
@@ -38,4 +39,3 @@ binary_sensor:
     on_press:
       - switch.toggle: relay
     internal: True
-    id: button
