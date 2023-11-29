@@ -1,0 +1,83 @@
+substitutions:
+  vendor_name: teckin
+  vendor_friendly: Teckin
+  device_name: sp20
+  device_friendly: SP20
+
+  esphome_name: ${vendor_name}
+  esphome_friendly_name: "${vendor_friendly} ${device_friendly}"
+  switch_relay_restore_mode: "RESTORE_DEFAULT_ON"
+
+packages:
+  common: !include_dir_merge_named packages/common/
+  esp8266: !include packages/chip/esp8266.yaml
+  api: !include_dir_merge_named packages/api/
+
+esp8266:
+  board: esp01_1m
+
+status_led:
+  pin:
+    number: GPIO0
+    inverted: True
+
+output:
+  - id: led
+    platform: gpio
+    pin:
+      number: GPIO2
+      inverted: True
+
+switch:
+  - id: relay
+    platform: gpio
+    name: "${esphome_friendly_name} Relay"
+    pin: GPIO4
+    restore_mode: ${switch_relay_restore_mode}
+    on_turn_on:
+      - output.turn_on: led
+    on_turn_off:
+      - output.turn_off: led
+
+binary_sensor:
+  - id: button
+    platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "${esphome_friendly_name} Button"
+    on_press:
+      - switch.toggle: relay
+    internal: True
+
+sensor:
+  - platform: hlw8012
+    sel_pin:
+      number: GPIO12
+      inverted: True
+    cf_pin: GPIO5
+    cf1_pin: GPIO14
+    current:
+      name: "${esphome_friendly_name} Current"
+      accuracy_decimals: 1
+    voltage:
+      name: "${esphome_friendly_name} Voltage"
+      accuracy_decimals: 1
+    power:
+      name: "${esphome_friendly_name} Power"
+      accuracy_decimals: 1
+      id: device_power
+      filters:
+        - lambda: return (x / 2.2);
+    update_interval: 60s
+    current_resistor: 0.001  # default 0.001
+    voltage_divider: 910  # default 2351
+    change_mode_every: 3  # default 8
+
+  - platform: total_daily_energy
+    name: "${esphome_friendly_name} Daily Energy"
+    power_id: device_power
+    filters:
+      - multiply: 0.001 # convert Wh to kWh
+    unit_of_measurement: kWh
