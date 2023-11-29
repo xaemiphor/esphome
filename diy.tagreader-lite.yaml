@@ -5,8 +5,8 @@
 substitutions:
   vendor_name: diy
   vendor_friendly: DIY
-  device_name: tagreader-minimal
-  device_friendly: TagReader-minimal
+  device_name: tagreader-lite
+  device_friendly: TagReader-lite
 
 packages:
   common: !include_dir_merge_named packages/common/
