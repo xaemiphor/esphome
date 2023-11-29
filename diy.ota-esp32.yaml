@@ -6,7 +6,7 @@ substitutions:
 
   esphome_name: ${vendor_name}
   esphome_friendly_name: "${vendor_friendly} ${device_friendly}"
-  esp32_board: esp01_1m
+  esp32_board: esp32dev
 
 packages:
   common: !include_dir_merge_named packages/common/
