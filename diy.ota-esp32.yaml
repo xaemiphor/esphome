@@ -1,0 +1,17 @@
+substitutions:
+  vendor_name: diy
+  vendor_friendly: DIY
+  device_name: ota-esp32
+  device_friendly: OTA-ESP32
+
+  esphome_name: ${vendor_name}
+  esphome_friendly_name: "${vendor_friendly} ${device_friendly}"
+  esp32_board: esp01_1m
+
+packages:
+  common: !include_dir_merge_named packages/common/
+  esp32: !include packages/chip/esp32.yaml
+  api: !include_dir_merge_named packages/api/
+
+esp32:
+  board: ${esp32_board}
