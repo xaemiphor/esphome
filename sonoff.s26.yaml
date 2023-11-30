@@ -1,0 +1,10 @@
+substitutions:
+  vendor_name: sonoff
+  vendor_friendly: Sonoff
+  device_name: s26
+  device_friendly: S26
+
+  switch_relay_restore_mode: "RESTORE_DEFAULT_ON"
+
+packages:
+  s31-lite: !include sonoff.s31-lite.yaml
