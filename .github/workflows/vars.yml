@@ -17,4 +17,4 @@ jobs:
       - name: vars
         id: vars
         run: |
-          echo include=$(find . -mindepth 1 -maxdepth 1 -type f -iname '*.yaml' -printf '%f\n' | jq -c --raw-input -s '[split("\n")[] | select(length > 0)] | map({"yaml_file": .})') | tee -a ${GITHUB_OUTPUT}
+          echo include=$(find . -mindepth 1 -maxdepth 1 -type f -iname '*.yaml' -printf '%f\n' | sort | jq -c --raw-input -s '[split("\n")[] | select(length > 0)] | map({"yaml_file": .})') | tee -a ${GITHUB_OUTPUT}
